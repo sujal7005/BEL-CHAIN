@@ -4,12 +4,14 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: true,            // listen on 0.0.0.0 — required for proxies/sandboxes
     port: 5173,
     strictPort: true,
-    open: true, // opens browser automatically
+    allowedHosts: [
+      "sb-43f9tnafx88u.vercel.run",   // the specific sandbox host
+      ".vercel.run",                  // or wildcard: any *.vercel.run host
+    ],
     proxy: {
-      // Any request from the client to /api/v1/* is forwarded to the Express server.
-      // This means the client can just call "/api/v1/auth/login" — no CORS, no hardcoded host.
       "/api": {
         target: "http://localhost:4000",
         changeOrigin: true,
@@ -22,8 +24,6 @@ export default defineConfig({
     sourcemap: true,
   },
   resolve: {
-    alias: {
-      "@": "/src",
-    },
+    alias: { "@": "/src" },
   },
 });
