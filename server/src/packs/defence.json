@@ -1,0 +1,37 @@
+{
+  "id": "defence",
+  "name": "BEL Defence Supply Chain",
+  "version": "1.0.0",
+  "roles": ["admin", "manager", "staff", "supplier", "auditor"],
+  "templates": {
+    "component": {
+      "label": "Component Passport",
+      "fields": [
+        { "key": "partNumber", "label": "Part Number", "type": "text", "required": true },
+        { "key": "description", "label": "Description", "type": "textarea" },
+        { "key": "serialNumber", "label": "Serial Number", "type": "text", "required": true },
+        { "key": "clearance", "label": "Clearance Level", "type": "select", "options": ["public","restricted","secret"] },
+        { "key": "supplierOrgId", "label": "Supplier Org", "type": "text" },
+        { "key": "deliveredAt", "label": "Delivered At", "type": "date" }
+      ]
+    },
+    "testReport": {
+      "label": "Test Report",
+      "fields": [
+        { "key": "componentRef", "label": "Component Ref", "type": "text", "required": true },
+        { "key": "result", "label": "Result", "type": "select", "options": ["pass","fail"] },
+        { "key": "notes", "label": "Notes", "type": "textarea" }
+      ]
+    }
+  },
+  "abac": [
+    { "action": "record:read",   "roles": ["admin","manager","staff","auditor"], "condition": "sameOrg" },
+    { "action": "record:write",  "roles": ["admin","manager","staff"], "condition": "sameOrg" },
+    { "action": "document:read", "roles": ["admin","manager","staff"], "condition": "sameOrg" },
+    { "action": "document:read", "roles": ["auditor"], "condition": "deny" },
+    { "action": "ledger:read",   "roles": ["admin","manager","auditor"], "condition": "any" }
+  ],
+  "highRiskActions": ["record:update"],
+  "requiredApprovals": { "record:update": 2 },
+  "reportLabels": { "chainVerify": "Chain Integrity Report" }
+}

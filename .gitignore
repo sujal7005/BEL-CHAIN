@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Env files — keep the example, ignore the real one
+.env
+.env.*
+!.env.example
+
+# Encrypted file fallback storage (created at runtime by IPFSStorage)
+storage/
+!storage/.gitkeep
+
+# Local MongoDB dump / backups
+dump/
+backup/
+
+# Logs
+*.log
+logs/
+
+# Coverage (vitest)
+coverage/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+
+# Temp
+tmp/
